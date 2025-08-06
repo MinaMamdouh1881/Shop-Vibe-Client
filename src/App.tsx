@@ -7,6 +7,9 @@ import Collections from './pages/Collections';
 import New from './pages/New';
 import ForgetPassword from './pages/ForgetPassword';
 import ResetPassword from './pages/ResetPassword';
+import Category from './pages/Category';
+import SubCategory from './pages/SubCategory';
+import ProductById from './pages/ProductById';
 export default function App() {
   return (
     <>
@@ -32,7 +35,16 @@ export default function App() {
             <Route path='/forget-password' element={<ForgetPassword />} />
             <Route path='/reset-password' element={<ResetPassword />} />
             <Route path='/' element={<Home />} />
-            <Route path='/collections' element={<Collections />} />
+            <Route path='/collections'>
+              <Route index element={<Collections />} />
+              <Route path=':gender'>
+                <Route index element={<Category />} />
+                <Route path=':subCat' element={<SubCategory />} />
+              </Route>
+            </Route>
+            <Route path='/product'>
+              <Route path=':id' element={<ProductById />} />
+            </Route>
             <Route path='/new' element={<New />} />
           </Route>
         </Routes>

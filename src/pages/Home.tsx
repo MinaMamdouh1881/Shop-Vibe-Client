@@ -1,4 +1,11 @@
 import { useSearchParams } from 'react-router';
+import {
+  useGetBestSalesMenQuery,
+  useGetBestSalesWomenQuery,
+  useGetFeaturedMenQuery,
+  useGetFeaturedWomenQuery,
+} from '../redux/services/productsApi';
+import Slider from '../components/Slider';
 
 function Home() {
   const [searchParams] = useSearchParams();
@@ -7,12 +14,32 @@ function Home() {
     localStorage.setItem('user', user);
     window.location.href = '/';
   }
+
+  const {
+    data: featuredMen,
+    isLoading: loadingFeaturedMen,
+    isError: errorFeaturedMen,
+  } = useGetFeaturedMenQuery(undefined);
+  const {
+    data: featuredWomen,
+    isLoading: loadingFeaturedWomen,
+    isError: errorFeaturedWomen,
+  } = useGetFeaturedWomenQuery(undefined);
+  const {
+    data: bestSalesMen,
+    isLoading: loadingBestSalesMen,
+    isError: errorBestSalesMen,
+  } = useGetBestSalesMenQuery(undefined);
+  const {
+    data: bestSalesWomen,
+    isLoading: loadingBestSalesWomen,
+    isError: errorBestSalesWomen,
+  } = useGetBestSalesWomenQuery(undefined);
+
   return (
-    <div className='space-y-15'>
+    <div className='space-y-15 mb-15'>
       {/* Hero */}
-      <div
-        className='flex flex-col-reverse lg:flex-row justify-between items-center gap-y-10'
-      >
+      <section className='flex flex-col-reverse lg:flex-row justify-between items-center gap-y-10'>
         <div className='lg:w-[50%] space-y-10 bg-black/30 p-5 rounded-2xl'>
           <h2 className='text-3xl font-bold'>Welcome to Shop Vibe</h2>
           <p>Discover Your Style, Feel the Vibe!</p>
@@ -33,7 +60,48 @@ function Home() {
           className='w-[80%] sm:w-[60%] lg:w-[45%] rounded-2xl'
           style={{ boxShadow: '0 0px 20px var(--COLOR)' }}
         />
-      </div>
+      </section>
+      {/* Hero */}
+
+      {/* Featchered Men */}
+      <Slider
+        data={featuredMen?.products}
+        error={errorFeaturedMen}
+        loading={loadingFeaturedMen}
+        title='Featured In Men'
+        sliderId='featured-men'
+      />
+      {/* Featchered Men */}
+
+      {/* Featchered Women */}
+      <Slider
+        data={featuredWomen?.products}
+        error={errorFeaturedWomen}
+        loading={loadingFeaturedWomen}
+        title='Featured In Women'
+        sliderId='featured-Women'
+      />
+      {/* Featchered Women */}
+
+      {/* Best Sales Men */}
+      <Slider
+        data={bestSalesMen?.products}
+        error={errorBestSalesMen}
+        loading={loadingBestSalesMen}
+        title='Best Sales In Men'
+        sliderId='best-sales-men'
+      />
+      {/* Best Sales Men */}
+
+      {/* Best Sales Women */}
+      <Slider
+        data={bestSalesWomen?.products}
+        error={errorBestSalesWomen}
+        loading={loadingBestSalesWomen}
+        title='Best Sales In Women'
+        sliderId='best-sales-women'
+      />
+      {/* Best Sales Women */}
     </div>
   );
 }

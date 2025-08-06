@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Edu+SA+Hand:wght@400..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 @import 'tailwindcss';
 
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
 body {
   font-family: 'IBM Plex Mono', monospace;
   overflow-x: hidden;
@@ -13,10 +17,57 @@ body {
   --INPUT: #e7edf4;
   --COLOR: #0d141c;
   --BTN: #0c7ff2;
+  --ACCENT: #10b981;
+  --SECONDARY: #6b7280;
+  --HOVER: #1e3a8a;
+  --ERROR: #ef4444;
+  --BG2: #104e64;
+  --TEXT: #d1d1d1;
+  --HEADING: #00ffcc;
 }
+
 .dark {
   --BG: #141a1f;
   --INPUT: #2b3640;
   --BTN: #0c7ff2;
   --COLOR: #ffffff;
+  --ACCENT: #34d399;
+  --SECONDARY: #9ca3af;
+  --HOVER: #e0f2fe;
+  --ERROR: #f87171;
+  /* --BG2: #104e64; */
+}
+
+.custom-nav-button {
+  position: absolute;
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  background: color-mix(in srgb, var(--BG2) 50%, transparent 50%);
+  color: white;
+  border-radius: 9999px;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  transition: background 0.2s;
+}
+.custom-nav-button:hover {
+  background: color-mix(in srgb, var(--BTN) 50%, transparent 50%);
+}
+
+.custom-nav-button[class*='prev-'] {
+  transform: translate(-50%,-50%);
+}
+
+.custom-nav-button[class*='next-'] {
+  transform: translate(50%,-50%);
+}
+
+@media (max-width: 767px) {
+  .custom-nav-button[class*='prev-'] {
+    transform: translate(10%,-50%);
+  }
+  .custom-nav-button[class*='next-'] {
+    transform: translate(-10%,-50%);
+  }
 }

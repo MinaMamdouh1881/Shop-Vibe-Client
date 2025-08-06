@@ -45,7 +45,7 @@ function Navbar() {
     >
       <div className='flex'>
         <SiShopee size={25} />
-        <h1 className='text-2xl font-bold'>Shop Vipe</h1>
+        <h1 className='text-2xl font-bold'>Shop Vibe</h1>
       </div>
       {/* hamburger menu */}
       <button
@@ -55,7 +55,7 @@ function Navbar() {
         {menuOpen ? <MdClose size={30} /> : <MdMenu size={30} />}
       </button>
       {/* hamburger menu */}
-      {/* desctop menu */}
+      {/* desktop menu */}
       <ul className='hidden md:flex'>
         {middleLinks.map((link, index) => (
           <li className={`${Styles.links}`} key={index}>

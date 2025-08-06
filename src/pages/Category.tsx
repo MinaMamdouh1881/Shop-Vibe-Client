@@ -1,25 +1,41 @@
-import { useGetNewArrivalQuery } from '../redux/services/productsApi';
+import { useParams } from 'react-router';
+import { useGetProductsQuery } from '../redux/services/productsApi';
 import SingleProduct from '../components/SingleProduct';
 import ProductsLoading from '../components/ProductsLoading';
 import { useState } from 'react';
+import { isGender } from '../types/productsType';
+function Category() {
+  const { gender } = useParams<{ gender?: string }>();
 
-function New() {
-  const { data, isLoading, isError } = useGetNewArrivalQuery(undefined);
+  if (!isGender(gender)) {
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        <p className=''>Error No Products Here</p>
+      </div>
+    );
+  }
+  const { data, isLoading, isError } = useGetProductsQuery({
+    gender,
+  });
+
   const [page, setPage] = useState(1);
   const limit = 8;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const numOfPages = Math.ceil((data?.products.length || limit) / limit);
 
-  const currentProduct = data?.products.slice(startIndex, endIndex);
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+
+  const currentProducts = data?.products.slice(startIndex, endIndex);
+  const totalPages = Math.ceil((data?.products.length || limit) / limit);
+
   return (
     <div className='space-y-5'>
       <h2 className='text-center text-2xl font-bold md:text-4xl'>
-        New Arrivals
+        {gender === 'men' ? "Men's Collection" : "Women's Collection"}
       </h2>
       <p className='text-center text-sm md:text-xl'>
-        Check out the latest products in out collection. Fresh styles added
-        weekly.
+        Check out products in
+        {gender === 'men' ? ' men Collection. ' : ' women Collection. '}
+        Fresh styles added weekly.
       </p>
       {isLoading && (
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-40'>
@@ -37,12 +53,12 @@ function New() {
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
         {data?.success &&
           data.products.length &&
-          currentProduct?.map((el) => (
+          currentProducts?.map((el) => (
             <SingleProduct product={el} key={el._id} />
           ))}
       </div>
       <div className='flex flex-row flex-wrap items-center justify-center gap-5 mt-10'>
-        {Array.from({ length: numOfPages }, (_, i) => (
+        {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i}
             onClick={() => setPage(i + 1)}
@@ -58,28 +74,30 @@ function New() {
   );
 }
 
-export default New;
-// import { useGetNewArrivalQuery } from '../redux/services/productsApi';
+export default Category;
+// import { useLocation } from 'react-router';
+// import { useGetProductsQuery } from '../redux/services/productsApi';
 // import SingleProduct from '../components/SingleProduct';
 // import ProductsLoading from '../components/ProductsLoading';
-// import { useState } from 'react';
+// function ChildCollection() {
+//   const { pathname } = useLocation();
+//   console.log(pathname.replace('/collections/', ''));
+//   const gender =
+//     pathname.replace('/collections/', '') === 'men' ? 'men' : 'women';
 
-// function New() {
-//   const { data, isLoading, isError } = useGetNewArrivalQuery(undefined);
-//   const [page, setPage] = useState(1);
-//   const limit = 8;
-//   const startIndex = (page - 1) * limit;
-//   const endIndex = page * limit;
+//   const { data, isLoading, isError } = useGetProductsQuery({
+//     gender,
+//   });
 
-//   const currentProduct = data?.products.slice(startIndex, endIndex);
 //   return (
 //     <div className='space-y-5'>
 //       <h2 className='text-center text-2xl font-bold md:text-4xl'>
-//         New Arrivals
+//         {gender === 'men' ? "Men's Collection" : "Women's Collection"}
 //       </h2>
 //       <p className='text-center text-sm md:text-xl'>
-//         Check out the latest products in out collection. Fresh styles added
-//         weekly.
+//         Check out products in{' '}
+//         {gender === 'men' ? 'men Collection' : 'women Collection'}
+//         Fresh styles added weekly.
 //       </p>
 //       {isLoading && (
 //         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-40'>
@@ -105,4 +123,4 @@ export default New;
 //   );
 // }
 
-// export default New;
+// export default ChildCollection;
