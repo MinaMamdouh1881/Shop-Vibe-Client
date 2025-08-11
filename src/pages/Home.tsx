@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import {
   useGetBestSalesMenQuery,
   useGetBestSalesWomenQuery,
@@ -6,14 +6,40 @@ import {
   useGetFeaturedWomenQuery,
 } from '../redux/services/productsApi';
 import Slider from '../components/Slider';
+import type { AppDispatch } from '../redux/store';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../redux/features/mainSlice';
+import { useEffect } from 'react';
+import type { UserData } from '../types/userDataType';
+import { setCartAndFav } from '../redux/features/cartAndFavSlice';
 
 function Home() {
   const [searchParams] = useSearchParams();
-  const user = searchParams.get('user');
-  if (user) {
-    localStorage.setItem('user', user);
-    window.location.href = '/';
-  }
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const res = searchParams.get('res');
+  useEffect(() => {
+    if (res) {
+      const response: { success: boolean; token: string; user: UserData } =
+        JSON.parse(decodeURIComponent(res));
+      dispatch(
+        setUserData({
+          id: response.user.id,
+          isLoggedIn: true,
+          rule: response.user.rule,
+          userName: response.user.userName,
+          token: response.token,
+        })
+      );
+      dispatch(
+        setCartAndFav({
+          cart: response.user.myCart,
+          fav: response.user.myFavorites,
+        })
+      );
+      navigate('/');
+    }
+  }, [res]);
 
   const {
     data: featuredMen,

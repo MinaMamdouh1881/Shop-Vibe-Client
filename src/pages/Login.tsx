@@ -1,8 +1,8 @@
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useRef, useState, type FormEvent } from 'react';
 import { CgSpinner } from 'react-icons/cg';
+import { useRef, useState, type FormEvent } from 'react';
 import { Link } from 'react-router';
 import LoginProvider from '../components/LoginProvider';
 import { useLoginMutation } from '../redux/services/authApi';
@@ -10,7 +10,9 @@ import { loginSchema } from '../validation/loginValidation';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/features/mainSlice';
+import { setCartAndFav } from '../redux/features/cartAndFavSlice';
 import type { AppDispatch } from '../redux/store';
+import type { UserData } from '../types/userDataType';
 
 function Login() {
   const [showPass, setShowPass] = useState(false);
@@ -51,10 +53,20 @@ function Login() {
     }
     //call Api
     try {
-      const res = await login(Object.fromEntries(formData)).unwrap();
-      console.log('login success', res);
-      dispatch(setUserData(res.user));
-      localStorage.setItem('user', JSON.stringify(res.user));
+      const res: { success: boolean; token: string; user: UserData } =
+        await login(Object.fromEntries(formData)).unwrap();
+      dispatch(
+        setUserData({
+          id: res.user.id,
+          isLoggedIn: true,
+          rule: res.user.rule,
+          userName: res.user.userName,
+          token: res.token,
+        })
+      );
+      dispatch(
+        setCartAndFav({ cart: res.user.myCart, fav: res.user.myFavorites })
+      );
       navigate('/');
     } catch (err) {
       console.log('Login failed:', err);

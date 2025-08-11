@@ -3,13 +3,18 @@ import { FaShoppingCart } from 'react-icons/fa';
 import Styles from './navbar.module.css';
 import { SiShopee } from 'react-icons/si';
 import { MdDarkMode, MdLightMode, MdMenu, MdClose } from 'react-icons/md';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState, AppDispatch } from '../redux/store';
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { userLogout } from '../redux/features/mainSlice';
+import { deleteCartAndFav } from '../redux/features/cartAndFavSlice';
 
 function Navbar() {
-  const { user } = useSelector((store: RootState) => store.main);
+  const user = useSelector((state: RootState) => state.main.user);
+  const { cart, fav } = useSelector((state: RootState) => state.cartAndFav);
+
+  const dispatch = useDispatch<AppDispatch>();
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (localStorage.getItem('theme') === 'dark') {
       document.body.classList.add('dark');
@@ -33,11 +38,6 @@ function Navbar() {
     { name: 'Collections', to: '/collections' },
     { name: 'New', to: '/new' },
   ];
-
-  const logout = () => {
-    localStorage.removeItem('user');
-    window.location.href = '/';
-  };
   return (
     <div
       className='flex flex-row justify-between p-5 *:flex-row *:gap-5 *:items-center text-[var(--COLOR)] relative bg-[var(--BG)]'
@@ -66,23 +66,29 @@ function Navbar() {
       <ul className='hidden md:flex'>
         <li className='p-2 bg-[var(--INPUT)] rounded-lg relative'>
           <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs text-white'>
-            {user.myFavorites.length || 0}
+            {fav.length || 0}
           </span>
-          <Link to='/my-favorites'>
+          <Link to='/my-favorite'>
             <FaHeart size={15} />
           </Link>
         </li>
         <li className='p-2 bg-[var(--INPUT)] rounded-lg relative'>
           <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs text-white'>
-            {user.myCart.length || 0}
+            {cart.length || 0}
           </span>
           <Link to='/cart'>
             <FaShoppingCart size={15} />
           </Link>
         </li>
         <li className='bg-[var(--BTN)] p-2 rounded-lg text-sm text-white'>
-          {user.id || user.facebookId || user.googleId ? (
-            <button onClick={logout} className='cursor-pointer'>
+          {user.isLoggedIn ? (
+            <button
+              onClick={() => {
+                dispatch(userLogout());
+                dispatch(deleteCartAndFav());
+              }}
+              className='cursor-pointer'
+            >
               Logout
             </button>
           ) : (
@@ -115,23 +121,29 @@ function Navbar() {
         <ul className='flex flex-row justify-center gap-5 '>
           <li className='py-2 px-3 bg-[var(--INPUT)] rounded-lg flex justify-center items-center relative'>
             <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs text-white'>
-              {user.myFavorites.length || 0}
+              {fav.length || 0}
             </span>
-            <Link to='/my-favorites'>
+            <Link to='/my-favorite'>
               <FaHeart size={15} />
             </Link>
           </li>
           <li className='py-2 px-3 bg-[var(--INPUT)] rounded-lg flex justify-center items-center relative'>
             <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs'>
-              {user.myCart.length || 0}
+              {cart.length || 0}
             </span>
             <Link to='/cart'>
               <FaShoppingCart size={15} />
             </Link>
           </li>
           <li className='bg-[var(--BTN)] p-2 rounded-lg text-sm text-white'>
-            {user.id || user.facebookId || user.googleId ? (
-              <button onClick={logout} className='cursor-pointer'>
+            {user.isLoggedIn ? (
+              <button
+                onClick={() => {
+                  dispatch(userLogout());
+                  dispatch(deleteCartAndFav());
+                }}
+                className='cursor-pointer'
+              >
                 Logout
               </button>
             ) : (

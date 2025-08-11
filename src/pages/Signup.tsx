@@ -10,6 +10,8 @@ import { signupSchema } from '../validation/signupValidation';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../redux/store';
 import { useSignupMutation } from '../redux/services/authApi';
+import { setCartAndFav } from '../redux/features/cartAndFavSlice';
+import type { UserData } from '../types/userDataType';
 
 function Signup() {
   const [showPass, setShowPass] = useState(false);
@@ -56,10 +58,20 @@ function Signup() {
     }
     //call Api
     try {
-      const res = await login(Object.fromEntries(formData)).unwrap();
-      console.log('login success', res);
-      dispatch(setUserData(res.user));
-      localStorage.setItem('user', JSON.stringify(res.user));
+      const res: { success: boolean; token: string; user: UserData } =
+        await login(Object.fromEntries(formData)).unwrap();
+      dispatch(
+        setUserData({
+          id: res.user.id,
+          isLoggedIn: true,
+          rule: res.user.rule,
+          userName: res.user.userName,
+          token: res.token,
+        })
+      );
+      dispatch(
+        setCartAndFav({ cart: res.user.myCart, fav: res.user.myFavorites })
+      );
       navigate('/');
     } catch (err) {
       console.log('Login failed:', err);

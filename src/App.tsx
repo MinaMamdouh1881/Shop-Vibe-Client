@@ -10,7 +10,12 @@ import ResetPassword from './pages/ResetPassword';
 import Category from './pages/Category';
 import SubCategory from './pages/SubCategory';
 import ProductById from './pages/ProductById';
+import { useSelector } from 'react-redux';
+import type { RootState } from './redux/store';
+import Cart from './pages/Cart';
+import MyFavorite from './pages/MyFavorite';
 export default function App() {
+  const { user } = useSelector((state: RootState) => state.main);
   return (
     <>
       <BrowserRouter>
@@ -18,19 +23,11 @@ export default function App() {
           <Route element={<Layout />}>
             <Route
               path='/login'
-              element={
-                !localStorage.getItem('user') ? <Login /> : <Navigate to='/' />
-              }
+              element={!user.isLoggedIn ? <Login /> : <Navigate to='/' />}
             />
             <Route
               path='/signup'
-              element={
-                !localStorage.getItem('user') ? (
-                  <Signup />
-                ) : (
-                  <Navigate to={'/'} />
-                )
-              }
+              element={!user.isLoggedIn ? <Signup /> : <Navigate to={'/'} />}
             />
             <Route path='/forget-password' element={<ForgetPassword />} />
             <Route path='/reset-password' element={<ResetPassword />} />
@@ -46,6 +43,8 @@ export default function App() {
               <Route path=':id' element={<ProductById />} />
             </Route>
             <Route path='/new' element={<New />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/my-favorite' element={<MyFavorite />} />
           </Route>
         </Routes>
       </BrowserRouter>

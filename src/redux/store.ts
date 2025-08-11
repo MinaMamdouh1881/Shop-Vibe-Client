@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import mainReducer from './features/mainSlice';
+import cartAndFavReducer from './features/cartAndFavSlice';
 import { authApi } from './services/authApi';
 import { productsApi } from './services/productsApi';
 const store = configureStore({
   reducer: {
     main: mainReducer,
+    cartAndFav: cartAndFavReducer,
     [authApi.reducerPath]: authApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
   },
