@@ -16,7 +16,13 @@ export const authApi = createApi({
       query: ({ email, password, userName }) => ({
         url: '/signup',
         method: 'POST',
-        body: { email, password, userName },
+        body: {
+          email,
+          password,
+          userName,
+          cartItems: [...JSON.parse(localStorage.getItem('myCart') || '[]')],
+          wishListItems: [...JSON.parse(localStorage.getItem('myFav') || '[]')],
+        },
       }),
     }),
     forgetPass: builder.mutation({

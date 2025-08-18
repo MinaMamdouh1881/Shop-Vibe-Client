@@ -17,13 +17,10 @@ body {
   --INPUT: #e7edf4;
   --COLOR: #0d141c;
   --BTN: #0c7ff2;
-  --ACCENT: #10b981;
   --SECONDARY: #6b7280;
-  --HOVER: #1e3a8a;
-  --ERROR: #ef4444;
+  --RED: #b62323;
   --BG2: #104e64;
   --TEXT: #d1d1d1;
-  --HEADING: #00ffcc;
 }
 
 .dark {
@@ -31,11 +28,7 @@ body {
   --INPUT: #2b3640;
   --BTN: #0c7ff2;
   --COLOR: #ffffff;
-  --ACCENT: #34d399;
   --SECONDARY: #9ca3af;
-  --HOVER: #e0f2fe;
-  --ERROR: #f87171;
-  /* --BG2: #104e64; */
 }
 
 .custom-nav-button {
@@ -56,18 +49,18 @@ body {
 }
 
 .custom-nav-button[class*='prev-'] {
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
 .custom-nav-button[class*='next-'] {
-  transform: translate(50%,-50%);
+  transform: translate(50%, -50%);
 }
 
 @media (max-width: 767px) {
   .custom-nav-button[class*='prev-'] {
-    transform: translate(10%,-50%);
+    transform: translate(10%, -50%);
   }
   .custom-nav-button[class*='next-'] {
-    transform: translate(-10%,-50%);
+    transform: translate(-10%, -50%);
   }
 }

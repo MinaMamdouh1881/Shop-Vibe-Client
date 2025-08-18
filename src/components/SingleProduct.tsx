@@ -4,18 +4,76 @@ import { IoCart } from 'react-icons/io5';
 const baseUrl = import.meta.env.VITE_BASE_URL;
 import type { PRODUCT } from '../types/productsType';
 import { Link } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../redux/store';
+import {
+  saveFav,
+  sendFav,
+  type FAVINITIALSTATE,
+} from '../redux/features/favoriteSlice';
+import toast from 'react-hot-toast';
 
 function SingleProduct({ product }: { product: PRODUCT }) {
+  const { cart, fav, main } = useSelector((store: RootState) => store);
+  const dispatch = useDispatch<AppDispatch>();
+  const favHandle = ({
+    _id,
+    image,
+    name,
+    price,
+  }: FAVINITIALSTATE['fav'][number]) => {
+    const exists = (list: FAVINITIALSTATE['fav']) =>
+      list.some((el) => el._id === product._id);
+    //GEST
+    if (!main.user.isLoggedIn) {
+      const guestFav: FAVINITIALSTATE['fav'] = JSON.parse(
+        localStorage.getItem('myFav') || '[]'
+      );
+      if (exists(guestFav)) {
+        dispatch(saveFav([...fav.fav.filter((el) => el._id !== product._id)]));
+        return toast.error('Product Removed From Favorites');
+      }
+      const updated = [...guestFav, { _id, image, name, price }];
+      dispatch(saveFav(updated));
+      return toast.success('Product added to Favorites');
+    }
+    //LOGGED IN
+    dispatch(sendFav({ _id, image, name, price }));
+  };
   return (
     <div
       key={product._id}
       className='overflow-hidden relative group transition-all duration-500 rounded-lg text-white bg-[var(--INPUT)] flex flex-col'
     >
-      <span className='p-2 bg-[var(--BG2)]/80 absolute left-0 z-10 duration-300 -translate-y-full group-hover:translate-y-0'>
-        <FaHeart size={25} color='white' />
-      </span>
+      <button
+        className='p-2 bg-[var(--BG2)]/80 absolute left-0 z-10 duration-300 -translate-y-full group-hover:translate-y-0 cursor-pointer'
+        onClick={() =>
+          favHandle({
+            _id: product._id,
+            name: product.name,
+            image: product.image,
+            price: product.price,
+          })
+        }
+      >
+        <FaHeart
+          size={25}
+          color={
+            fav.fav.find((item) => item._id === product._id)
+              ? '#f87171'
+              : 'white'
+          }
+        />
+      </button>
       <span className='p-2 bg-[var(--BG2)]/80 absolute right-0 z-10 delay-300 duration-300 -translate-y-full group-hover:translate-y-0'>
-        <IoCart size={25} color='white' />
+        <IoCart
+          size={25}
+          color={
+            cart.cart.find((item) => item.product._id === product._id)
+              ? '#f87171'
+              : 'white'
+          }
+        />
       </span>
       <img
         src={baseUrl + product.image}

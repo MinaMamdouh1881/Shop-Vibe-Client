@@ -5,14 +5,14 @@ export type MENCATEGORIES = 'shoes' | 'pants' | 'shirt' | 't-shirt';
 export type PRODUCT = {
   _id: string;
   name: string;
-  gender: GENDER;
-  category: WOMENCATEGORIES | MENCATEGORIES;
-  description: string;
+  gender?: GENDER;
+  category?: WOMENCATEGORIES | MENCATEGORIES;
+  description?: string;
   price: number;
-  size: string[];
+  size?: string[];
   image: string;
-  featured: boolean;
-  sales: number;
+  featured?: boolean;
+  sales?: number;
 };
 
 const VALID_GENDERS: readonly GENDER[] = ['men', 'women'];

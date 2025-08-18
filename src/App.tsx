@@ -14,10 +14,12 @@ import { useSelector } from 'react-redux';
 import type { RootState } from './redux/store';
 import Cart from './pages/Cart';
 import MyFavorite from './pages/MyFavorite';
+// import { Toaster } from 'react-hot-toast';
 export default function App() {
   const { user } = useSelector((state: RootState) => state.main);
   return (
     <>
+      {/* <Toaster position='top-right' reverseOrder={false} /> */}
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>

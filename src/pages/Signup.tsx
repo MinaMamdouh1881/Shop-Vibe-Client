@@ -10,8 +10,9 @@ import { signupSchema } from '../validation/signupValidation';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../redux/store';
 import { useSignupMutation } from '../redux/services/authApi';
-import { setCartAndFav } from '../redux/features/cartAndFavSlice';
 import type { UserData } from '../types/userDataType';
+import { saveCart } from '../redux/features/cartSlice';
+import { saveFav } from '../redux/features/favoriteSlice';
 
 function Signup() {
   const [showPass, setShowPass] = useState(false);
@@ -23,7 +24,7 @@ function Signup() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const [login, { error, isLoading }] = useSignupMutation();
+  const [signup, { error, isLoading }] = useSignupMutation();
 
   const formRef = useRef<HTMLFormElement>(null);
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -59,7 +60,7 @@ function Signup() {
     //call Api
     try {
       const res: { success: boolean; token: string; user: UserData } =
-        await login(Object.fromEntries(formData)).unwrap();
+        await signup(Object.fromEntries(formData)).unwrap();
       dispatch(
         setUserData({
           id: res.user.id,
@@ -69,9 +70,8 @@ function Signup() {
           token: res.token,
         })
       );
-      dispatch(
-        setCartAndFav({ cart: res.user.myCart, fav: res.user.myFavorites })
-      );
+      dispatch(saveCart(res.user.myCart));
+      dispatch(saveFav(res.user.myFavorites));
       navigate('/');
     } catch (err) {
       console.log('Login failed:', err);

@@ -11,7 +11,8 @@ import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/features/mainSlice';
 import { useEffect } from 'react';
 import type { UserData } from '../types/userDataType';
-import { setCartAndFav } from '../redux/features/cartAndFavSlice';
+import { saveCart } from '../redux/features/cartSlice';
+import { saveFav } from '../redux/features/favoriteSlice';
 
 function Home() {
   const [searchParams] = useSearchParams();
@@ -31,12 +32,8 @@ function Home() {
           token: response.token,
         })
       );
-      dispatch(
-        setCartAndFav({
-          cart: response.user.myCart,
-          fav: response.user.myFavorites,
-        })
-      );
+      dispatch(saveCart(response.user.myCart));
+      dispatch(saveFav(response.user.myFavorites));
       navigate('/');
     }
   }, [res]);

@@ -7,6 +7,14 @@ import { IoCart } from 'react-icons/io5';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { Link } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../redux/store';
+import {
+  saveFav,
+  sendFav,
+  type FAVINITIALSTATE,
+} from '../redux/features/favoriteSlice';
+import toast from 'react-hot-toast';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -23,6 +31,32 @@ function Slider({
   title: string;
   sliderId: string;
 }) {
+  const { cart, fav, main } = useSelector((store: RootState) => store);
+  const dispatch = useDispatch<AppDispatch>();
+  const favHandle = ({
+    _id,
+    image,
+    name,
+    price,
+  }: FAVINITIALSTATE['fav'][number]) => {
+    const exists = (list: FAVINITIALSTATE['fav']) =>
+      list.some((el) => el._id === _id);
+    //GEST
+    if (!main.user.isLoggedIn) {
+      const guestFav: FAVINITIALSTATE['fav'] = JSON.parse(
+        localStorage.getItem('myFav') || '[]'
+      );
+      if (exists(guestFav)) {
+        dispatch(saveFav([...fav.fav.filter((el) => el._id !== _id)]));
+        return toast.error('Product Removed From Favorites');
+      }
+      const updated = [...guestFav, { _id, image, name, price }];
+      dispatch(saveFav(updated));
+      return toast.success('Product added to Favorites');
+    }
+    //LOGGED IN
+    dispatch(sendFav({ _id, image, name, price }));
+  };
   return (
     <div className='space-y-5 relative'>
       <h2 className='text-2xl font-bold'>{title}</h2>
@@ -92,11 +126,35 @@ function Slider({
                   key={el._id}
                   className='bg-[var(--INPUT)] overflow-hidden relative group transition-all duration-500 rounded-lg text-white'
                 >
-                  <span className='p-2 bg-[var(--BG2)]/80 absolute left-0 z-10 delay-300 duration-300 -translate-y-full group-hover:translate-y-0'>
-                    <FaHeart size={25} color='white' />
-                  </span>
-                  <span className='p-2 bg-[var(--BG2)]/80 absolute right-0 z-10 delay-500 duration-300 -translate-y-full group-hover:translate-y-0'>
-                    <IoCart size={25} color='white' />
+                  <button
+                    className='p-2 bg-[var(--BG2)]/80 absolute left-0 z-10 duration-300 -translate-y-full group-hover:translate-y-0 cursor-pointer'
+                    onClick={() =>
+                      favHandle({
+                        _id: el._id,
+                        name: el.name,
+                        price: el.price,
+                        image: el.image,
+                      })
+                    }
+                  >
+                    <FaHeart
+                      size={25}
+                      color={
+                        fav.fav.find((item) => item._id === el._id)
+                          ? '#f87171'
+                          : 'white'
+                      }
+                    />
+                  </button>
+                  <span className='p-2 bg-[var(--BG2)]/80 absolute right-0 z-10 delay-300 duration-300 -translate-y-full group-hover:translate-y-0'>
+                    <IoCart
+                      size={25}
+                      color={
+                        cart.cart.find((item) => item.product._id === el._id)
+                          ? '#f87171'
+                          : 'white'
+                      }
+                    />
                   </span>
                   <img
                     src={baseUrl + el.image}

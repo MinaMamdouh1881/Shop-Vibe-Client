@@ -3,6 +3,8 @@ import {
   isGender,
   isMenCategory,
   isWomenCategory,
+  type MENCATEGORIES,
+  type WOMENCATEGORIES,
 } from '../types/productsType';
 import { useGetProductsQuery } from '../redux/services/productsApi';
 import SingleProduct from '../components/SingleProduct';
@@ -10,10 +12,9 @@ import ProductsLoading from '../components/ProductsLoading';
 import { useState } from 'react';
 function SubCategory() {
   const { gender, subCat } = useParams<{
-    subCat?: string;
+    subCat?: WOMENCATEGORIES | MENCATEGORIES;
     gender?: string;
   }>();
-  console.log(gender, subCat);
 
   if (!isGender(gender)) {
     return (

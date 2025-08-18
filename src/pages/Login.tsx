@@ -10,7 +10,8 @@ import { loginSchema } from '../validation/loginValidation';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/features/mainSlice';
-import { setCartAndFav } from '../redux/features/cartAndFavSlice';
+import { saveCart } from '../redux/features/cartSlice';
+import { saveFav } from '../redux/features/favoriteSlice';
 import type { AppDispatch } from '../redux/store';
 import type { UserData } from '../types/userDataType';
 
@@ -64,9 +65,9 @@ function Login() {
           token: res.token,
         })
       );
-      dispatch(
-        setCartAndFav({ cart: res.user.myCart, fav: res.user.myFavorites })
-      );
+
+      dispatch(saveCart(res.user.myCart));
+      dispatch(saveFav(res.user.myFavorites));
       navigate('/');
     } catch (err) {
       console.log('Login failed:', err);
