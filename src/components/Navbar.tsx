@@ -1,6 +1,6 @@
 import { FaHeart } from 'react-icons/fa6';
 import { FaShoppingCart } from 'react-icons/fa';
-import Styles from './navbar.module.css';
+import Styles from './Navbar.module.css';
 import { SiShopee } from 'react-icons/si';
 import { MdDarkMode, MdLightMode, MdMenu, MdClose } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
