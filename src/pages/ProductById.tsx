@@ -76,6 +76,7 @@ function ProductById() {
             src={baseUrl + data.product.image}
             alt={data.product.name}
             className='w-full max-w-md h-auto object-cover rounded-lg shadow-md'
+            loading='lazy'
           />
         </div>
         <div className='flex flex-col gap-4'>

@@ -78,10 +78,11 @@ function Home() {
           </button>
         </div>
         <img
-          src='src/assets/shope-vibe-hero.webp'
+          src='/shope-vibe-hero.webp'
           alt='shope-vibe-hero'
           className='w-[80%] sm:w-[60%] lg:w-[45%] rounded-2xl'
           style={{ boxShadow: '0 0px 20px var(--COLOR)' }}
+          loading='lazy'
         />
       </section>
       {/* Hero */}

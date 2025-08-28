@@ -79,6 +79,7 @@ function SingleProduct({ product }: { product: PRODUCT }) {
         src={baseUrl + product.image}
         alt={product.name}
         className='aspect-square transition-all duration-500 group-hover:scale-110 p-2 h-80 w-full'
+        loading='lazy'
       />
       <div className=' bg-[var(--BG2)]/80 transition-all duration-500 space-y-4 p-2 flex-1 flex flex-col justify-between'>
         <h3>{product.name}</h3>

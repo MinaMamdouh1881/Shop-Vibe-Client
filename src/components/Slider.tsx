@@ -162,6 +162,7 @@ function Slider({
                     src={baseUrl + el.image}
                     alt={el.name}
                     className='aspect-square transition-all duration-500 group-hover:scale-110 p-2 h-80 w-full'
+                    loading='lazy'
                   />
                   <div className='absolute left-0 bottom-0 bg-[var(--BG2)]/80 transition-all duration-500 space-y-4 p-2 translate-y-full group-hover:translate-y-0'>
                     <h3>{el.name}</h3>

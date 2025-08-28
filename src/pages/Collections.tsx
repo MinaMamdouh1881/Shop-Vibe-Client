@@ -3,43 +3,43 @@ import { Link } from 'react-router';
 function Collections() {
   const data = [
     {
-      image: 'src/assets/men-pants.webp',
+      image: '/men-pants.webp',
       alt: 'men-pants',
       title: 'Pants',
       link: '/collections/men/pants',
     },
     {
-      image: 'src/assets/men-shirts.webp',
+      image: '/men-shirts.webp',
       alt: 'men-shirts',
       title: 'Shirts',
       link: '/collections/men/shirt',
     },
     {
-      image: 'src/assets/men-shoes.webp',
+      image: '/men-shoes.webp',
       alt: 'men-shoes',
       title: 'Shoes',
       link: '/collections/men/shoes',
     },
     {
-      image: 'src/assets/men-t-shirt.webp',
+      image: '/men-t-shirt.webp',
       alt: 'men-t-shirt',
       title: 'T-shirt',
       link: '/collections/men/t-shirt',
     },
     {
-      image: 'src/assets/women-blouse.webp',
+      image: '/women-blouse.webp',
       alt: 'women-blouse',
       title: 'Blouse',
       link: '/collections/women/blouse',
     },
     {
-      image: 'src/assets/women-heels.webp',
+      image: '/women-heels.webp',
       alt: 'women-heels',
       title: 'Heels',
       link: '/collections/women/heels',
     },
     {
-      image: 'src/assets/women-skirt.webp',
+      image: '/women-skirt.webp',
       alt: 'women-skirt',
       title: 'Skirt',
       link: '/collections/women/skirt',
@@ -57,9 +57,10 @@ function Collections() {
       <div className='grid grid-cols-1 gap-10 sm:grid-cols-2 overflow-hidden'>
         <div className='overflow-hidden rounded-2xl relative group'>
           <img
-            src='src/assets/men-collection.webp'
+            src='/men-collection.webp'
             alt='man-collection'
             className='scale-120 group-hover:scale-100 duration-500 filter grayscale-0 brightness-100 group-hover:grayscale group-hover:brightness-50'
+            loading='lazy'
           />
           <div className='absolute top-1/2 left-1/2 duration-500 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 group-hover:-translate-y-1/2 flex flex-col justify-center gap-10'>
             <h3 className='text-3xl font-semibold text-[#00BFFF] text-nowrap'>
@@ -75,9 +76,10 @@ function Collections() {
         </div>
         <div className='overflow-hidden rounded-2xl relative group'>
           <img
-            src='src/assets/women-collection.webp'
+            src='/women-collection.webp'
             alt='woman-collection'
             className='scale-120 group-hover:scale-100 duration-500 filter grayscale-0 brightness-100 group-hover:grayscale group-hover:brightness-50'
+            loading='lazy'
           />
           <div className='absolute top-1/2 left-1/2 duration-500 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 group-hover:-translate-y-1/2 flex flex-col justify-center gap-10'>
             <h3 className='text-3xl font-semibold text-[#00BFFF] text-nowrap'>
@@ -99,6 +101,7 @@ function Collections() {
               src={el.image}
               alt={el.alt}
               className='aspect-square w-[250px] scale-120 group-hover:scale-100 duration-500 filter grayscale-0 brightness-100 group-hover:grayscale group-hover:brightness-50'
+              loading='lazy'
             />
             <div className='absolute top-1/2 left-1/2 duration-500 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 group-hover:-translate-y-1/2 flex flex-col justify-center gap-10'>
               <h3 className='text-3xl font-semibold text-[#00BFFF] text-nowrap'>

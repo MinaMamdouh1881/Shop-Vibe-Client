@@ -83,6 +83,7 @@ function Cart() {
                     src={baseUrl + el.product.image}
                     alt={el.product.name}
                     className='w-full h-full object-cover'
+                    loading='lazy'
                   />
                 </div>
               </Link>
