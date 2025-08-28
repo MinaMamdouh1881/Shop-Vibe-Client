@@ -15,18 +15,19 @@ import { useEffect } from 'react';
 import axios from 'axios';
 
 function Cart() {
-  const { cart, main } = useSelector((state: RootState) => state);
+  const { cart, totalPrice } = useSelector((state: RootState) => state.cart);
+  const { user } = useSelector((state: RootState) => state.main);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (main.user.isLoggedIn) {
+    if (user.isLoggedIn) {
       const saveCart = async () => {
         await axios
           .put(
             `${baseUrl}/cartAndFav/saveCart`,
-            { items: cart.cart },
+            { items: cart },
             {
-              headers: { authorization: `Bearer ${main.user.token}` },
+              headers: { authorization: `Bearer ${user.token}` },
             }
           )
           .catch((err) => console.log(err));
@@ -36,15 +37,44 @@ function Cart() {
     }
   }, []);
 
-  if (!cart.cart.length) return <h1 className='text-center'>No Items Here</h1>;
+  const checkoutHandler = async () => {
+    if (!user.isLoggedIn) {
+      return toast.error('You need to be logged in to checkout');
+    }
+    if (!cart.length) {
+      return toast.error('Your cart is empty');
+    }
+
+    try {
+      const res = await axios.post(
+        `${baseUrl}/checkout/checkout`,
+        {
+          data: cart.map((el) => ({
+            product: el.product._id,
+            quantity: el.quantity,
+          })),
+          totalPrice,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      if (res.data.iframeUrl) {
+        window.location.href = res.data.iframeUrl;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong during checkout');
+    }
+  };
+
+  if (!cart.length) return <h1 className='text-center'>No Items Here</h1>;
 
   return (
     <div className='flex flex-col gap-5'>
-      {cart.cart?.map((el) => (
-        <div
-          className='bg-[var(--INPUT)] rounded-2xl border'
-          key={el.product._id}
-        >
+      {cart?.map((el, index) => (
+        <div className='bg-[var(--INPUT)] rounded-2xl border' key={index}>
           <div className='flex flex-col gap-5 md:flex-row md:justify-between'>
             <div className='flex flex-row gap-2 md:gap-10'>
               <Link to={`/product/${el.product._id}`}>
@@ -105,11 +135,11 @@ function Cart() {
       <div className='flex flex-row justify-between'>
         <button
           className='bg-[var(--BTN)] p-2 rounded-lg text-sm text-white'
-          onClick={() => toast.success('Checkout successful!')}
+          onClick={() => checkoutHandler()}
         >
           Checkout
         </button>
-        <p>Total Price : {cart.totalPrice.toFixed(2)}$</p>
+        <p>Total Price : {totalPrice.toFixed(2)}$</p>
       </div>
     </div>
   );

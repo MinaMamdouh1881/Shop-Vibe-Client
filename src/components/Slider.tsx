@@ -31,7 +31,9 @@ function Slider({
   title: string;
   sliderId: string;
 }) {
-  const { cart, fav, main } = useSelector((store: RootState) => store);
+  const { cart } = useSelector((store: RootState) => store.cart);
+  const { fav } = useSelector((store: RootState) => store.fav);
+  const { user } = useSelector((store: RootState) => store.main);
   const dispatch = useDispatch<AppDispatch>();
   const favHandle = ({
     _id,
@@ -42,12 +44,12 @@ function Slider({
     const exists = (list: FAVINITIALSTATE['fav']) =>
       list.some((el) => el._id === _id);
     //GEST
-    if (!main.user.isLoggedIn) {
+    if (user.isLoggedIn) {
       const guestFav: FAVINITIALSTATE['fav'] = JSON.parse(
         localStorage.getItem('myFav') || '[]'
       );
       if (exists(guestFav)) {
-        dispatch(saveFav([...fav.fav.filter((el) => el._id !== _id)]));
+        dispatch(saveFav([...fav.filter((el) => el._id !== _id)]));
         return toast.error('Product Removed From Favorites');
       }
       const updated = [...guestFav, { _id, image, name, price }];
@@ -140,7 +142,7 @@ function Slider({
                     <FaHeart
                       size={25}
                       color={
-                        fav.fav.find((item) => item._id === el._id)
+                        fav.find((item) => item._id === el._id)
                           ? '#f87171'
                           : 'white'
                       }
@@ -150,7 +152,7 @@ function Slider({
                     <IoCart
                       size={25}
                       color={
-                        cart.cart.find((item) => item.product._id === el._id)
+                        cart.find((item) => item.product._id === el._id)
                           ? '#f87171'
                           : 'white'
                       }
