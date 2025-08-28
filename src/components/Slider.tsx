@@ -44,7 +44,7 @@ function Slider({
     const exists = (list: FAVINITIALSTATE['fav']) =>
       list.some((el) => el._id === _id);
     //GEST
-    if (user.isLoggedIn) {
+    if (!user.isLoggedIn) {
       const guestFav: FAVINITIALSTATE['fav'] = JSON.parse(
         localStorage.getItem('myFav') || '[]'
       );
