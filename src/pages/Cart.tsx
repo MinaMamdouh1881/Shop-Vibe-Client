@@ -11,13 +11,15 @@ import {
   removeFromCart,
 } from '../redux/features/cartSlice';
 import toast from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ImSpinner2 } from 'react-icons/im';
 
 function Cart() {
   const { cart, totalPrice } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.main);
   const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user.isLoggedIn) {
@@ -46,6 +48,7 @@ function Cart() {
     }
 
     try {
+      setLoading(true);
       const res = await axios.post(
         `${baseUrl}/checkout/checkout`,
         {
@@ -66,6 +69,8 @@ function Cart() {
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong during checkout');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -138,7 +143,11 @@ function Cart() {
           className='bg-[var(--BTN)] p-2 rounded-lg text-sm text-white'
           onClick={() => checkoutHandler()}
         >
-          Checkout
+          {loading ? (
+            <ImSpinner2 size={20} className='animate-spin mx-auto' />
+          ) : (
+            'Checkout'
+          )}
         </button>
         <p>Total Price : {totalPrice.toFixed(2)}$</p>
       </div>
