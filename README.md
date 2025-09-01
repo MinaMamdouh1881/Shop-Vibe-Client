@@ -1,69 +1,102 @@
-# React + TypeScript + Vite
+# Shop Vibe Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce web application built with **React**, **TypeScript**, **Redux Toolkit**, **Vite**, and **Tailwind CSS**. Shop Vibe offers a stylish shopping experience for men and women, featuring collections, new arrivals, favorites, cart management, authentication, and checkout.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Browse men's and women's collections by category
+- View product details and images
+- Add products to cart and favorites (with local storage support for guests)
+- User authentication (login, signup, password reset, social login)
+- Checkout flow with payment integration
+- Responsive design with dark mode toggle
+- Toast notifications for user feedback
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/) for state management
+- [Vite](https://vitejs.dev/) for fast development and builds
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Zod](https://zod.dev/) for form validation
+- [React Hot Toast](https://react-hot-toast.com/) for notifications
+- [React Icons](https://react-icons.github.io/react-icons/) for UI icons
+- [Swiper](https://swiperjs.com/react) for product sliders
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js (v18+ recommended)
+- npm
+
+### Installation
+
+```sh
+git clone https://github.com/your-username/shop-vibe-client.git
+cd shop-vibe-client
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the root directory and set your backend API URL:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+VITE_BASE_URL=http://localhost:4000
+```
+
+### Development
+
+Start the development server:
+
+```sh
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Build
+
+To build for production:
+
+```sh
+npm run build
+```
+
+### Lint
+
+To run ESLint:
+
+```sh
+npm run lint
+```
+
+## Project Structure
+
+```
+src/
+  components/      # Reusable UI components
+  pages/           # Route-based pages
+  redux/           # Redux slices and API services
+  types/           # TypeScript types
+  validation/      # Zod validation schemas
+  assets/          # Static assets
+  App.tsx          # Main app component with routing
+  main.tsx         # Entry point
+public/            # Static files (images, favicon)
+```
+
+## Customization
+
+- **Styling:** Uses Tailwind CSS and custom variables for easy theming.
+- **Dark Mode:** Toggle available in the navbar.
+- **API:** Connects to a backend via `VITE_BASE_URL`.
+
+## License
+
+MIT
+
+---
+
+**Note:** This is the client-side application. You need a compatible backend
