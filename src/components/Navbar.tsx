@@ -147,7 +147,7 @@ function Navbar() {
               </Link>
             </li>
             <li className='py-2 px-3 bg-[var(--INPUT)] rounded-lg flex justify-center items-center relative'>
-              <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs'>
+              <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs text-white'>
                 {cart.length || 0}
               </span>
               <Link to='/cart'>

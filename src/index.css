@@ -5,10 +5,13 @@
 @import 'swiper/css/navigation';
 @import 'swiper/css/pagination';
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'IBM Plex Mono', monospace;
-  overflow-x: hidden;
-  width: 100%;
   background-color: var(--BG);
 }
 
