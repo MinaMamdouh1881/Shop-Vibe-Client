@@ -121,13 +121,17 @@ function Navbar() {
         {/* mobile menu */}
         <div
           className={`md:hidden absolute w-full duration-500 bg-[var(--BG)] top-[72px] z-50 px-5 space-y-5 pb-5 ${
-            menuOpen ? 'left-0' : 'left-full'
+            menuOpen ? 'left-0' : 'left-[100vw]'
           }`}
         >
           <ul className='md:flex'>
             {middleLinks.map((link, index) => (
               <li className={`${Styles.links}`} key={index}>
-                <Link to={link.to} onClick={() => setMenuOpen((prev) => !prev)}>
+                <Link
+                  to={link.to}
+                  className='flex'
+                  onClick={() => setMenuOpen((prev) => !prev)}
+                >
                   {link.name}
                 </Link>
               </li>
@@ -136,7 +140,7 @@ function Navbar() {
           <ul className='flex flex-row justify-center gap-5 '>
             <li className='py-2 px-3 bg-[var(--INPUT)] rounded-lg flex justify-center items-center relative'>
               <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs text-white'>
-                {/* {fav.length || 0} */}
+                {fav.length || 0}
               </span>
               <Link to='/my-favorite'>
                 <FaHeart size={15} />
@@ -144,7 +148,7 @@ function Navbar() {
             </li>
             <li className='py-2 px-3 bg-[var(--INPUT)] rounded-lg flex justify-center items-center relative'>
               <span className='absolute bg-[var(--BTN)] aspect-square rounded-full px-1 top-full left-full -translate-x-1/2 -translate-y-1/2 text-xs'>
-                {/* {cart.length || 0} */}
+                {cart.length || 0}
               </span>
               <Link to='/cart'>
                 <FaShoppingCart size={15} />
